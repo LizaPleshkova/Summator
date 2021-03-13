@@ -49,10 +49,13 @@ namespace Summator
         DataTable allDateUser(int owner_id);
 
 
-        // new 2/0
+        // for holidays 
         [OperationContract]
         DataTable GetAllUserHolidays(int owner_id);
 
+        [OperationContract]
+        DataTable GetDatesHolidays(int owner_id);
+        
         [OperationContract]
         int InsertHoliday(int ownerId, string date, string holidayNote);
 
@@ -62,8 +65,8 @@ namespace Summator
         [OperationContract]
         DataTable GetUserHoliday(int ownerId, string date);
 
-
-        //[OperationContract]
+        [OperationContract]
+        int DeleteHoliday(int holidayId);
 
 
         //[OperationContract]

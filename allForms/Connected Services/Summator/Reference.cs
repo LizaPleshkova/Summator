@@ -87,6 +87,12 @@ namespace allForms.Summator {
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ISummator/GetAllUserHolidays", ReplyAction="http://tempuri.org/ISummator/GetAllUserHolidaysResponse")]
         System.Threading.Tasks.Task<System.Data.DataTable> GetAllUserHolidaysAsync(int owner_id);
         
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ISummator/GetDatesHolidays", ReplyAction="http://tempuri.org/ISummator/GetDatesHolidaysResponse")]
+        System.Data.DataTable GetDatesHolidays(int owner_id);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ISummator/GetDatesHolidays", ReplyAction="http://tempuri.org/ISummator/GetDatesHolidaysResponse")]
+        System.Threading.Tasks.Task<System.Data.DataTable> GetDatesHolidaysAsync(int owner_id);
+        
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ISummator/InsertHoliday", ReplyAction="http://tempuri.org/ISummator/InsertHolidayResponse")]
         int InsertHoliday(int ownerId, string date, string holidayNote);
         
@@ -98,6 +104,18 @@ namespace allForms.Summator {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ISummator/UpdateHoliday", ReplyAction="http://tempuri.org/ISummator/UpdateHolidayResponse")]
         System.Threading.Tasks.Task<int> UpdateHolidayAsync(int holidayId, int ownerId, string dateHoliday, string holidayNote);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ISummator/GetUserHoliday", ReplyAction="http://tempuri.org/ISummator/GetUserHolidayResponse")]
+        System.Data.DataTable GetUserHoliday(int ownerId, string date);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ISummator/GetUserHoliday", ReplyAction="http://tempuri.org/ISummator/GetUserHolidayResponse")]
+        System.Threading.Tasks.Task<System.Data.DataTable> GetUserHolidayAsync(int ownerId, string date);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ISummator/DeleteHoliday", ReplyAction="http://tempuri.org/ISummator/DeleteHolidayResponse")]
+        int DeleteHoliday(int holidayId);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ISummator/DeleteHoliday", ReplyAction="http://tempuri.org/ISummator/DeleteHolidayResponse")]
+        System.Threading.Tasks.Task<int> DeleteHolidayAsync(int holidayId);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -223,6 +241,14 @@ namespace allForms.Summator {
             return base.Channel.GetAllUserHolidaysAsync(owner_id);
         }
         
+        public System.Data.DataTable GetDatesHolidays(int owner_id) {
+            return base.Channel.GetDatesHolidays(owner_id);
+        }
+        
+        public System.Threading.Tasks.Task<System.Data.DataTable> GetDatesHolidaysAsync(int owner_id) {
+            return base.Channel.GetDatesHolidaysAsync(owner_id);
+        }
+        
         public int InsertHoliday(int ownerId, string date, string holidayNote) {
             return base.Channel.InsertHoliday(ownerId, date, holidayNote);
         }
@@ -237,6 +263,22 @@ namespace allForms.Summator {
         
         public System.Threading.Tasks.Task<int> UpdateHolidayAsync(int holidayId, int ownerId, string dateHoliday, string holidayNote) {
             return base.Channel.UpdateHolidayAsync(holidayId, ownerId, dateHoliday, holidayNote);
+        }
+        
+        public System.Data.DataTable GetUserHoliday(int ownerId, string date) {
+            return base.Channel.GetUserHoliday(ownerId, date);
+        }
+        
+        public System.Threading.Tasks.Task<System.Data.DataTable> GetUserHolidayAsync(int ownerId, string date) {
+            return base.Channel.GetUserHolidayAsync(ownerId, date);
+        }
+        
+        public int DeleteHoliday(int holidayId) {
+            return base.Channel.DeleteHoliday(holidayId);
+        }
+        
+        public System.Threading.Tasks.Task<int> DeleteHolidayAsync(int holidayId) {
+            return base.Channel.DeleteHolidayAsync(holidayId);
         }
     }
 }

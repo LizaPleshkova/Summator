@@ -16,10 +16,13 @@ namespace allForms
     {
         private DataTable dtLoad;
         private DataTable dtDate;
+
+        private DataTable dtDateHoliday;
+        private DataTable dtDatesHolidays;
+        private DataTable AllDatesHolidays;
+
         public static DataTable dtSearch;
-
-        private int rowIndex = -1;
-
+        
         private string dateStr;
         private bool selectDate = false;
 
@@ -159,6 +162,7 @@ namespace allForms
 
             selectDate = true;
 
+            loadTableHoliday();// load dtDateHoliday and dtDatesHolidays
 
             // Create the ToolTip and associate with the Form container.
             ToolTip toolTip1 = new ToolTip();
@@ -196,7 +200,6 @@ namespace allForms
                     if (client.DeleteNote(int.Parse(dtLoad.Rows[0]["noteId"].ToString())) == 1)
                     {
                         MessageBox.Show("Запись удалена");
-                        rowIndex = -1;
                     }
                     else MessageBox.Show("Удаление не произошло.");
                     updateDataTable();
@@ -212,8 +215,6 @@ namespace allForms
                     client.Close();
                 }
             }
-            //updateAllDateUser();
-
         }
 
         // сохранение при добавлении или изменении записи
@@ -221,7 +222,6 @@ namespace allForms
         {
             var client = new Summator.SummatorClient("BasicHttpBinding_ISummator");
             client.Open();
-
 
             if (!selectDate)
             {
@@ -344,10 +344,10 @@ namespace allForms
             selectDate = true;
 
             dtLoad = updateDataTable();
-
+            loadTableHoliday();
             var client = new Summator.SummatorClient("BasicHttpBinding_ISummator");
             client.Open();
-
+            
             try
             {
                 if (dtLoad.Rows.Count == 0 || client.CheckNote(int.Parse(dtLoad.Rows[0]["noteId"].ToString())) == 0)
@@ -356,27 +356,27 @@ namespace allForms
                     textBoxTitle.Text = "Введите текст заголовка";
                     textBoxNote.Text = "Введите текст заметки";
 
-
                     col = Color.FromArgb(255, 255, 255, 255);
                     GetColorfrom(col);
 
                     textBoxNote.BackColor = col;
                     textBoxTitle.BackColor = col;
-                    toolTip1.SetToolTip(this.monthCalendar1, "Doesn't have holidays");
+
+                    if (InHoliday(date)) toolTip1.Show(dtDateHoliday.Rows[0]["holidayNote"].ToString(), this.monthCalendar1);
+                    else toolTip1.SetToolTip(this.monthCalendar1, "Doesn't have a holiday");
                     return;
                 }
                 else
                 {
+
+                    if (InHoliday(date)) toolTip1.Show(dtDateHoliday.Rows[0]["holidayNote"].ToString(), this.monthCalendar1);
+                    else toolTip1.SetToolTip(this.monthCalendar1, "Doesn't have a holiday");
+
                     textBoxNote.Text = dtLoad.Rows[0]["noteText"].ToString();
                     textBoxTitle.Text = dtLoad.Rows[0]["noteTitle"].ToString();
                     colString = dtLoad.Rows[0]["backColor"].ToString(); // получаем из бд сточку в виде -> 255;255;255;255
                     var title_holidays = dtLoad.Rows[0]["noteTitle"].ToString();
-                    //toolTip1.SetToolTip(this.monthCalendar1, title_holidays);
-                    toolTip1.Show(title_holidays, this.monthCalendar1);
-                    // Console.WriteLine("Color from dataBase" + colString);
-                    
-                    //
-
+                  
                     if (Regex.IsMatch(colString, "^[A-zА-яЁё]+$"))//если цвет состоит только из букв -> цвет системный 
                     {
 
@@ -553,6 +553,37 @@ namespace allForms
             PersonalHolidays holidays = new PersonalHolidays();
             holidays.Show();
         }
+
+        private void loadTableHoliday()
+        {
+            var client = new Summator.SummatorClient("BasicHttpBinding_ISummator");
+            client.Open();
+            try
+            {
+                dtDatesHolidays = client.GetDatesHolidays(Autorization.userId); // table of all holidays user (only their dates)
+                dtDateHoliday = client.GetUserHoliday(Autorization.userId, dateStr); // table with full information about one holiday
+            }
+            finally
+            {
+                client.Close();
+            }
+        }
+        private bool InHoliday(DateTime date)
+        {
+            int inAllDate = 0;
+            if (dtDatesHolidays.Rows.Count == 0) return false;
+            else
+            {
+                for (int j = 0; j < dtDatesHolidays.Rows.Count; j++)
+                {
+                    if (Convert.ToDateTime(dtDatesHolidays.Rows[j]["dateHoliday"]) == date) { inAllDate++; j++; }
+
+                }
+                if (inAllDate > 0) return true;
+                else return false;
+            }
+        }
+
 
         private void textBoxNote_TextChanged(object sender, EventArgs e)
         {

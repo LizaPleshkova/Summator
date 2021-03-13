@@ -108,6 +108,12 @@
   <wsdl:message name="ISummator_GetAllUserHolidays_OutputMessage">
     <wsdl:part name="parameters" element="tns:GetAllUserHolidaysResponse" />
   </wsdl:message>
+  <wsdl:message name="ISummator_GetDatesHolidays_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetDatesHolidays" />
+  </wsdl:message>
+  <wsdl:message name="ISummator_GetDatesHolidays_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetDatesHolidaysResponse" />
+  </wsdl:message>
   <wsdl:message name="ISummator_InsertHoliday_InputMessage">
     <wsdl:part name="parameters" element="tns:InsertHoliday" />
   </wsdl:message>
@@ -119,6 +125,18 @@
   </wsdl:message>
   <wsdl:message name="ISummator_UpdateHoliday_OutputMessage">
     <wsdl:part name="parameters" element="tns:UpdateHolidayResponse" />
+  </wsdl:message>
+  <wsdl:message name="ISummator_GetUserHoliday_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetUserHoliday" />
+  </wsdl:message>
+  <wsdl:message name="ISummator_GetUserHoliday_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetUserHolidayResponse" />
+  </wsdl:message>
+  <wsdl:message name="ISummator_DeleteHoliday_InputMessage">
+    <wsdl:part name="parameters" element="tns:DeleteHoliday" />
+  </wsdl:message>
+  <wsdl:message name="ISummator_DeleteHoliday_OutputMessage">
+    <wsdl:part name="parameters" element="tns:DeleteHolidayResponse" />
   </wsdl:message>
   <wsdl:portType name="ISummator">
     <wsdl:operation name="AddToDb">
@@ -169,6 +187,10 @@
       <wsdl:input wsaw:Action="http://tempuri.org/ISummator/GetAllUserHolidays" message="tns:ISummator_GetAllUserHolidays_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/ISummator/GetAllUserHolidaysResponse" message="tns:ISummator_GetAllUserHolidays_OutputMessage" />
     </wsdl:operation>
+    <wsdl:operation name="GetDatesHolidays">
+      <wsdl:input wsaw:Action="http://tempuri.org/ISummator/GetDatesHolidays" message="tns:ISummator_GetDatesHolidays_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ISummator/GetDatesHolidaysResponse" message="tns:ISummator_GetDatesHolidays_OutputMessage" />
+    </wsdl:operation>
     <wsdl:operation name="InsertHoliday">
       <wsdl:input wsaw:Action="http://tempuri.org/ISummator/InsertHoliday" message="tns:ISummator_InsertHoliday_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/ISummator/InsertHolidayResponse" message="tns:ISummator_InsertHoliday_OutputMessage" />
@@ -176,6 +198,14 @@
     <wsdl:operation name="UpdateHoliday">
       <wsdl:input wsaw:Action="http://tempuri.org/ISummator/UpdateHoliday" message="tns:ISummator_UpdateHoliday_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/ISummator/UpdateHolidayResponse" message="tns:ISummator_UpdateHoliday_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetUserHoliday">
+      <wsdl:input wsaw:Action="http://tempuri.org/ISummator/GetUserHoliday" message="tns:ISummator_GetUserHoliday_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ISummator/GetUserHolidayResponse" message="tns:ISummator_GetUserHoliday_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="DeleteHoliday">
+      <wsdl:input wsaw:Action="http://tempuri.org/ISummator/DeleteHoliday" message="tns:ISummator_DeleteHoliday_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ISummator/DeleteHolidayResponse" message="tns:ISummator_DeleteHoliday_OutputMessage" />
     </wsdl:operation>
   </wsdl:portType>
   <wsdl:binding name="BasicHttpBinding_ISummator" type="tns:ISummator">
@@ -288,6 +318,15 @@
         <soap:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
+    <wsdl:operation name="GetDatesHolidays">
+      <soap:operation soapAction="http://tempuri.org/ISummator/GetDatesHolidays" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
     <wsdl:operation name="InsertHoliday">
       <soap:operation soapAction="http://tempuri.org/ISummator/InsertHoliday" style="document" />
       <wsdl:input>
@@ -299,6 +338,24 @@
     </wsdl:operation>
     <wsdl:operation name="UpdateHoliday">
       <soap:operation soapAction="http://tempuri.org/ISummator/UpdateHoliday" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetUserHoliday">
+      <soap:operation soapAction="http://tempuri.org/ISummator/GetUserHoliday" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="DeleteHoliday">
+      <soap:operation soapAction="http://tempuri.org/ISummator/DeleteHoliday" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>
@@ -418,6 +475,15 @@
         <soap12:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
+    <wsdl:operation name="GetDatesHolidays">
+      <soap12:operation soapAction="http://tempuri.org/ISummator/GetDatesHolidays" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
     <wsdl:operation name="InsertHoliday">
       <soap12:operation soapAction="http://tempuri.org/ISummator/InsertHoliday" style="document" />
       <wsdl:input>
@@ -429,6 +495,24 @@
     </wsdl:operation>
     <wsdl:operation name="UpdateHoliday">
       <soap12:operation soapAction="http://tempuri.org/ISummator/UpdateHoliday" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetUserHoliday">
+      <soap12:operation soapAction="http://tempuri.org/ISummator/GetUserHoliday" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="DeleteHoliday">
+      <soap12:operation soapAction="http://tempuri.org/ISummator/DeleteHoliday" style="document" />
       <wsdl:input>
         <soap12:body use="literal" />
       </wsdl:input>

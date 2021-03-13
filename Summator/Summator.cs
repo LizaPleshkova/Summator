@@ -175,6 +175,7 @@ namespace Summator
 
         public int DeleteNote(int noteId)
         {
+
             using (var connection = new NpgsqlConnection(connectionString))
             {
                 try
@@ -386,7 +387,63 @@ namespace Summator
             }
 
         }
-        
+
+
+        public int DeleteHoliday(int holidayId)
+        {
+           
+            using (var connection = new NpgsqlConnection(connectionString))
+            {
+                try
+                {
+                    connection.Open();
+                    sql = String.Format("select * from delete_user_holiday('{0}')", holidayId);
+                    command = new NpgsqlCommand(sql, connection);
+                    if ((int)command.ExecuteScalar() == 1) return 1;
+                    else return 0;
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Удаление не произошло. Error : " + ex.Message);
+                    return 0;
+                }
+                finally
+                {
+                    connection.Close();
+                }
+
+            }
+
+        }
+
+        public DataTable GetDatesHolidays(int ownerId)
+        {
+            using (var connection = new NpgsqlConnection(connectionString))
+            {
+                try
+                {
+                    connection.Open();
+                    sql = String.Format("select * from get_all_holidays('{0}')", ownerId);
+                    command = new NpgsqlCommand(sql, connection);
+                    DataTable result_holidays = new DataTable("all_user_holidays");
+                    DataSet dataSet = new DataSet();
+                    using (NpgsqlDataAdapter tab = new NpgsqlDataAdapter(sql, connection))
+                    {
+                        dataSet.Reset();
+                        tab.Fill(dataSet);
+                        result_holidays = dataSet.Tables[0];
+                    }
+                    return result_holidays;
+                }
+
+                finally
+                {
+                    connection.Close();
+                }
+
+            }
+        }
+
         public DataTable GetAllUserHolidays(int ownerId)
         {
             using (var connection = new NpgsqlConnection(connectionString))
@@ -421,18 +478,17 @@ namespace Summator
                 try
                 {
                     connection.Open();
-                    //select* from get_holiday(33, '2021-03-07')
                     sql = String.Format("select* from get_holiday('{0}', '{1}')", ownerId, date);
                     command = new NpgsqlCommand(sql, connection);
-                    DataTable holiday = new DataTable("all_user_holidays");
+                    DataTable result_holidays = new DataTable("all_user_holidays");
                     DataSet dataSet = new DataSet();
                     using (NpgsqlDataAdapter tab = new NpgsqlDataAdapter(sql, connection))
                     {
                         dataSet.Reset();
                         tab.Fill(dataSet);
-                        holiday = dataSet.Tables[0];
+                        result_holidays = dataSet.Tables[0];
                     }
-                    return holiday;
+                    return result_holidays;
                 }
 
                 finally
@@ -441,6 +497,7 @@ namespace Summator
                 }
 
             }
+            
         }
 
         public DataTable allDateUser(int owner_id)
