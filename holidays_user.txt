@@ -1,0 +1,92 @@
+create table holidays_user(
+	holiday_id serial primary key,
+	owner_id integer references users(user_id) not null,
+	date_holiday date not null,
+	holiday_note character varying(40),
+	UNIQUE (owner_id, date_holiday),
+);
+drop table holidays_user;
+
+insert into holidays_user(owner_id, date_holiday, holiday_note)
+values (33, '2021-03-09', 'new title holiday 1');
+
+
+UPDATE holidays_user
+SET date_holiday = '2021-03-11'
+WHERE holiday_id = 2
+--WHERE owner_id = 33, date_holiday = '2021-03-09';
+
+drop function insert_user_holiday(integer, character varying, character varying)
+
+
+create function insert_user_holiday(_owner_id integer, _date_holiday character varying, _holiday_note character varying)
+returns int as
+$$
+begin
+	insert into holidays_user(owner_id, date_holiday, holiday_note)
+	values(_owner_id, to_date(_date_holiday, 'yyyy-mm-dd'), _holiday_note);
+	if found then -- успешно 
+		return 1;
+	else
+		return 0;
+	end if;
+end
+$$
+language plpgsql
+select * from insert_user_holiday(33, '2021-03-10', 'new title holiday 2')
+
+
+create or replace function update_user_holiday(_id integer, _owner_id integer, _date character varying, _note character varying)
+returns int as
+$$
+begin
+	UPDATE holidays_user
+	SET date_holiday = to_date(_date, 'yyyy-mm-dd'), holiday_note = _note
+	WHERE holiday_id = _id and owner_id = _owner_id;
+	if found then -- успешно 
+		return 1;
+	else
+		return 0;
+	end if;
+end
+$$
+language plpgsql
+select * from update_user_holiday(8,33, '2021-03-04', 'update new title holiday 1')
+
+
+create or replace function delete_user_holiday(_id integer)
+returns int as
+$$
+begin
+	delete from holidays_user
+	where holiday_id = _id;
+	if found then -- успешно 
+		return 1;
+	else
+		return 0;
+	end if;
+end
+$$
+language plpgsql
+select * from delete_user_holiday(12)
+
+
+create or replace function get_user_holidays(_owner_id integer)
+returns table(
+	holidayId integer,
+	ownerId integer,
+	dateHoliday date,
+	holidayNote character varying
+) as
+$$
+begin
+	return query
+	select * from holidays_user where owner_id = _owner_id;
+end
+$$
+language plpgsql
+select * from get_user_holidays(33)
+
+
+
+
